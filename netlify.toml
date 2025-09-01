@@ -1,0 +1,8 @@
+# This tells Netlify WHERE to find the serverless functions
+[build]
+  functions = "netlify/functions"
+
+# This tells Netlify HOW to bundle the functions
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["twilio", "@netlify/blobs"]
