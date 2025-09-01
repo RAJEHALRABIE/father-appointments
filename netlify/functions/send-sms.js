@@ -1,13 +1,23 @@
-// netlify/functions/send-sms.js
 import twilio from "twilio";
-export async function handler(event) {
+
+export const config = { path: "/.netlify/functions/send-sms" };
+
+export default async (req, context) => {
   try {
-    const { to, text } = JSON.parse(event.body || "{}");
-    if (!to || !text) return { statusCode: 400, body: "Missing 'to' or 'text'" };
-    const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-    const from = process.env.TWILIO_FROM;
-    if (!from) return { statusCode: 500, body: "TWILIO_FROM not set" };
-    const msg = await client.messages.create({ to, from, body: text });
-    return { statusCode: 200, body: JSON.stringify({ sid: msg.sid }) };
-  } catch (e) { return { statusCode: 500, body: e.message || "SMS error" }; }
-}
+    const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM } = process.env;
+    if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_FROM) {
+      return new Response(JSON.stringify({ ok:false, error: "Missing Twilio env vars" }), { status: 500 });
+    }
+    const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+    const body = await req.json();
+    const to = body?.to;
+    const text = body?.text;
+    if (!to || !text) {
+      return new Response(JSON.stringify({ ok:false, error: "Missing to/text" }), { status: 400 });
+    }
+    await client.messages.create({ to, from: TWILIO_FROM, body: text });
+    return new Response(JSON.stringify({ ok:true }), { status: 200 });
+  } catch (e) {
+    return new Response(JSON.stringify({ ok:false, error: e?.message || String(e) }), { status: 500 });
+  }
+};
