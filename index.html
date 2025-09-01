@@ -8,36 +8,25 @@
 <meta name="theme-color" content="#D12026">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#f7f9fb;--card:#fff;--primary:#D12026;--primary-grad:linear-gradient(135deg,#D12026,#a30f18);
-    --text:#1f2937;--muted:#6b7280;--shadow:0 10px 25px rgba(0,0,0,.08);--radius:16px;
-    --chip-w: 160px;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:"Tajawal",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;overflow-x:hidden}
+  :root{--bg:#f7f9fb;--card:#fff;--primary:#D12026;--primary-grad:linear-gradient(135deg,#D12026,#a30f18);--text:#1f2937;--muted:#6b7280;--shadow:0 10px 25px rgba(0,0,0,.08);--radius:16px}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"Tajawal",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;overflow-x:hidden}
   .header-wrap{position:fixed;inset:0 auto auto 0;z-index:1000;width:100%;background:var(--primary-grad);color:#fff;box-shadow:0 6px 14px rgba(0,0,0,.18)}
   .header{padding:10px 12px;max-width:980px;margin:0 auto}
   .top-greet{display:none;margin-bottom:6px;font-size:13px;opacity:.95}
   .hdr-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .hdr-btn{display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 10px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-weight:700;font-size:12px;cursor:pointer}
+  .hdr-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 10px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-weight:700;font-size:12px;cursor:pointer}
   .hdr-btn.primary{background:rgba(255,255,255,.22)}
-  .hdr-title{font-size:16px;font-weight:700;padding:6px 12px;color:#fff;background:rgba(255,255,255,.22);border-radius:12px}
-  .hdr-text{font-size:14px;font-weight:700;opacity:.95}
   .dates{display:flex;flex-direction:column;gap:2px;margin-top:8px;font-size:13px}
   .dates .hijri{color:#ffe9a8}
-  .container{padding:14px;max-width:980px;margin:0 auto}
-  .spacer{height:120px}
+  .container{padding:14px;max-width:980px;margin:0 auto} .spacer{height:120px}
   .card{background:var(--card);border-radius:var(--radius);box-shadow:0 10px 20px rgba(0,0,0,.06);padding:14px;margin-bottom:14px;position:relative;overflow:hidden}
-  .card-head{display:grid;grid-template-columns: var(--chip-w) 1fr;align-items:center;gap:12px;margin-bottom:6px}
-  .clinic-chip{display:inline-block;background:#e0e7ff;color:#1e3a8a;border:1px solid #93c5fd;padding:6px 12px;border-radius:12px;font-size:16px;font-weight:700;width:var(--chip-w);white-space:nowrap;overflow:visible}
+  .card-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .clinic-chip{display:inline-block;background:#e0e7ff;color:#1e3a8a;border:1px solid #93c5fd;padding:6px 12px;border-radius:12px;font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .doctor{font-weight:600;font-size:14px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .small{color:var(--muted);font-size:13px}
   .countdown{margin-top:10px;background:#f0fdf4;border:1px solid #bbf7d0;color:#065f46;padding:10px;border-radius:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
-  .segments{display:flex;gap:8px}
-  .seg{background:#fff;border:1px solid #d1fae5;border-radius:10px;min-width:72px;text-align:center;padding:6px 6px}
-  .seg .num{display:block;font-size:20px}
-  .seg .unit{display:block;font-size:11px;color:#047857;font-weight:700;margin-top:2px}
-  #app-shell{display:none}
+  .segments{display:flex;gap:8px} .seg{background:#fff;border:1px solid #d1fae5;border-radius:10px;min-width:72px;text-align:center;padding:6px 6px}
+  .seg .num{display:block;font-size:20px} .seg .unit{display:block;font-size:11px;color:#047857;font-weight:700;margin-top:2px}
 </style>
 </head>
 <body>
@@ -45,10 +34,11 @@
   <header class="header">
     <div id="greet" class="top-greet"></div>
     <div class="hdr-actions">
-      <span class="hdr-title">مواعيد الوالد</span>
+      <button class="hdr-btn primary" data-tab="main">مواعيد الوالد</button>
+      <button class="hdr-btn" data-tab="dialysis">غسيل الكلى</button>
       <button class="hdr-btn" data-tab="archive">سجل المواعيد</button>
       <button class="hdr-btn" data-tab="admin" id="admin-tab" style="display:none">الإدارة (خاصة)</button>
-      <span class="hdr-text">مستشفى د. سليمان الحبيب</span>
+      <a class="hdr-btn" href="https://hmg.com.sa" target="_blank" rel="noopener">مستشفى د. سليمان الحبيب</a>
     </div>
     <div class="dates">
       <div id="today-greg"></div>
@@ -58,68 +48,97 @@
   </header>
 </div>
 <div class="spacer"></div>
+<main class="container">
+  <section id="view-main"></section>
+  <section id="view-dialysis" style="display:none"></section>
+  <section id="view-archive" style="display:none"></section>
+  <section id="view-admin" style="display:none"></section>
+</main>
 
-<div id="app-shell">
-  <main class="container">
-    <section id="view-main"></section>
-    <section id="view-archive" style="display:none"></section>
-    <section id="view-admin" style="display:none"></section>
-  </main>
-</div>
-
-<!-- Login Gate -->
+<!-- Login Gate (Phone + OTP) -->
 <div id="login-gate" style="position:fixed;inset:0;background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55));display:none;z-index:2000">
   <div style="max-width:360px;margin:12vh auto;background:#fff;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,.25);padding:16px">
     <h3 style="margin:0 0 10px 0;font-size:16px">تسجيل الدخول برقم الجوال</h3>
     <div id="step1">
       <input id="lg-phone" type="tel" placeholder="05XXXXXXXX" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb;font-size:14px" inputmode="tel" />
-      <button id="send-otp" style="width:100%;margin-top:8px;background:#10b981;color:#fff;border:0;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer">إرسال رمز المصادقة</button>
+      <button id="send-otp" style="margin-top:8px;background:#10b981;color:#fff;border:0;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer">إرسال رمز المصادقة</button>
       <div id="ph-err" style="color:#b91c1c;font-size:12px;display:none">رقم الجوال غير مسجل</div>
     </div>
     <div id="step2" style="display:none">
       <input id="lg-otp" type="text" placeholder="ادخل الرمز" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb;font-size:14px" inputmode="numeric" />
-      <button id="verify-otp" style="width:100%;margin-top:8px;background:#2563eb;color:#fff;border:0;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer">تحقق</button>
+      <button id="verify-otp" style="margin-top:8px;background:#2563eb;color:#fff;border:0;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer">تحقق</button>
       <div id="otp-err" style="color:#b91c1c;font-size:12px;display:none">رمز المصادقة غير صحيح</div>
     </div>
   </div>
 </div>
 
 <script>
-const FATHER_LOCAL = "0532022686";
-const FATHER_INTL = "+966" + FATHER_LOCAL.slice(1);
+const USERS = [{"name": "راجح \"ابو هاشم\"", "phone": "0531447664", "isAdmin": true}, {"name": "عقيل \"ابو مشاري\"", "phone": "0530608583"}, {"name": "مشاري عقيل", "phone": "0507039720"}, {"name": "سالم \"ابو مؤيد\"", "phone": "0506965572"}, {"name": "احمد \"ابو حياه\"", "phone": "0532118318"}, {"name": "حسن محمد", "phone": "0581283320"}, {"name": "محمد راجح", "phone": "0501562190"}, {"name": "خضير \"ابو بدر\"", "phone": "0506985707"}, {"name": "بدر خضير", "phone": "0559765816"}, {"name": "معيض محمد", "phone": "0502909203"}, {"name": "عويضه \"ابو ماجد\"", "phone": "0550931651"}, {"name": "سعود محمد", "phone": "0550756682"}, {"name": "يوسف محمد", "phone": "0558178943"}, {"name": "سامي محمد", "phone": "0550390057"}, {"name": "علي \"ابو مهند\"", "phone": "0556076944"}, {"name": "عيسى \"ابو باسل\"", "phone": "0557508684"}, {"name": "مبارك \"ابو سيرين\"", "phone": "0502012378"}, {"name": "موسى \"ابو بسام\"", "phone": "0504295070"}, {"name": "عبدالعزيز محمد", "phone": "0504483563"}];
+
 const tz='Asia/Riyadh';
 const fmtDay=new Intl.DateTimeFormat('ar-SA-u-ca-gregory',{weekday:'long',timeZone:tz});
-const fmtDate=new Intl.DateTimeFormat('ar-SA-u-ca-gregory',{day:'2-digit',month:'long',year:'numeric',timeZone:tz});
+const fmtDate=new Intl.DateTimeFormat('ar-SA-u-ca-gregory',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:tz});
 const fmtTime=new Intl.DateTimeFormat('ar-SA-u-ca-gregory',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz});
-
-const USERS=[{"name":"راجح \"ابو هاشم\"","phone":"0531447664","isAdmin":true},{"name":"عقيل \"ابو مشاري\"","phone":"0530608583"},{"name":"مشاري عقيل","phone":"0507039720"},{"name":"سالم \"ابو مؤيد\"","phone":"0506965572"},{"name":"احمد \"ابو حياه\"","phone":"0532118318"},{"name":"حسن محمد","phone":"0581283320"},{"name":"محمد راجح","phone":"0501562190"}];
-
-const GEO_BRANCHES={"الرياض|السويدي":{lat:24.5966,lon:46.6359}};
-const ALLOWED_RADIUS_KM=60;
-
 const LS_USER='current_user_phone_v1';
-const LS_APPTS='extra_appts_v1';
-const LS_DXCFG='dx_cfg_v1';
-const LS_GEO_PREFIX='geo_user_';
+const LS_APPTS='extra_appts_v1'; const LS_ARCH='appts_archive_v1';
 const API_SAVE='/.netlify/functions/save-state';
 const API_SMS='/.netlify/functions/send-sms';
 
-function todayHeader(){const now=new Date();document.getElementById('today-greg').textContent='اليوم: '+new Intl.DateTimeFormat('ar-SA-u-ca-gregory',{weekday:'long',day:'2-digit',month:'long',year:'numeric',timeZone:tz}).format(now);document.getElementById('today-hijri').textContent='الموافق (هجري): '+new Intl.DateTimeFormat('ar-SA-u-ca-islamic',{weekday:'long',day:'2-digit',month:'long',year:'numeric',timeZone:tz}).format(now);}
+function todayHeader(){
+  const now=new Date();
+  document.getElementById('today-greg').textContent='اليوم: '+new Intl.DateTimeFormat('ar-SA-u-ca-gregory',{weekday:'long',day:'2-digit',month:'long',year:'numeric',timeZone:tz}).format(now);
+  document.getElementById('today-hijri').textContent='الموافق (هجري): '+new Intl.DateTimeFormat('ar-SA-u-ca-islamic',{weekday:'long',day:'2-digit',month:'long',year:'numeric',timeZone:tz}).format(now);
+}
 function getUser(){try{return JSON.parse(localStorage.getItem(LS_USER));}catch{return null;}}
 function setUser(u){localStorage.setItem(LS_USER,JSON.stringify(u));}
 function normalize05(p){p=(p||'').trim();return /^05\d{8}$/.test(p)?p:'';}
 function toIntl(p){return '+966'+p.slice(1);}
 
-const gate=document.getElementById('login-gate'), step1=document.getElementById('step1'), step2=document.getElementById('step2');
-const phI=document.getElementById('lg-phone'), sendBtn=document.getElementById('send-otp'), otpI=document.getElementById('lg-otp'), verifyBtn=document.getElementById('verify-otp');
-let otpCode=null, otpPhone=null, otpExp=null;
+const gate=document.getElementById('login-gate');
+const step1=document.getElementById('step1');
+const step2=document.getElementById('step2');
+const phI=document.getElementById('lg-phone');
+const sendBtn=document.getElementById('send-otp');
+const otpI=document.getElementById('lg-otp');
+const verifyBtn=document.getElementById('verify-otp');
+const phErr=document.getElementById('ph-err');
+const otpErr=document.getElementById('otp-err');
 
-function showLogin(force){const u=getUser(); if(force || !u){ gate.style.display='block'; } else { gate.style.display='none'; document.getElementById('app-shell').style.display='block';}}
+function showLogin(force){
+  const u=getUser();
+  gate.style.display = (!u || force) ? 'block' : 'none';
+  if (!u){ step1.style.display='block'; step2.style.display='none'; }
+}
 
-sendBtn.onclick=()=>{const p=normalize05(phI.value); const u=USERS.find(x=>x.phone===p); const phErr=document.getElementById('ph-err'); if(!u){phErr.style.display='block';return;} phErr.style.display='none'; otpCode=String(Math.floor(100000+Math.random()*900000)); otpPhone=p; otpExp=Date.now()+3*60*1000; fetch(API_SMS,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to:toIntl(p),text:`رمز الدخول: ${otpCode}`})}).catch(()=>{}); step1.style.display='none'; step2.style.display='block';};
-verifyBtn.onclick=()=>{const code=(otpI.value||'').trim(); const otpErr=document.getElementById('otp-err'); if(code===otpCode && Date.now()<=otpExp){const u=USERS.find(x=>x.phone===otpPhone); setUser({name:u.name,phone:u.phone,isAdmin:!!u.isAdmin}); gate.style.display='none'; try{navigator.geolocation.getCurrentPosition(pos=>{const key=LS_GEO_PREFIX+u.phone;localStorage.setItem(key, JSON.stringify({lat:pos.coords.latitude, lon:pos.coords.longitude, ts:Date.now()}));});}catch(e){} renderGreeting(); document.getElementById('app-shell').style.display='block'; route('main'); renderAll();} else {otpErr.style.display='block';}};
+sendBtn.onclick=()=>{
+  const p=normalize05(phI.value);
+  const u=USERS.find(x=>x.phone===p);
+  if(!u){ phErr.style.display='block'; return; }
+  phErr.style.display='none';
+  window.__otpCode = String(Math.floor(100000+Math.random()*900000));
+  window.__otpPhone = p;
+  window.__otpExp = Date.now()+3*60*1000;
+  fetch(API_SMS,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to:toIntl(p),text:`رمز الدخول: ${window.__otpCode}`})}).catch(()=>{});
+  step1.style.display='none'; step2.style.display='block';
+};
 
-function renderGreeting(){const u=getUser(); const g=document.getElementById('greet'); if(!u){g.style.display='none';return;} g.style.display='block'; g.textContent=`أهلاً بك، ${u.name} — ${u.phone}`; document.getElementById('admin-tab').style.display=u.isAdmin?'inline-flex':'none';}
+verifyBtn.onclick=()=>{
+  const code=(otpI.value||'').trim();
+  if(code===window.__otpCode && Date.now()<=window.__otpExp){
+    const u=USERS.find(x=>x.phone===window.__otpPhone);
+    setUser({name:u.name,phone:u.phone,isAdmin:!!u.isAdmin});
+    gate.style.display='none'; renderGreeting(); route('main'); renderAll();
+  }else{ otpErr.style.display='block'; }
+};
+
+function renderGreeting(){
+  const u=getUser();
+  const g=document.getElementById('greet');
+  if(!u){g.style.display='none';return;}
+  g.style.display='block';
+  g.textContent=`أهلاً بك، ${u.name} — ${u.phone}`;
+  document.getElementById('admin-tab').style.display=u.isAdmin?'inline-flex':'none';
+}
 
 const BASE_APPTS=[
   { clinic:'العظام', doctor:'الدكتور قمر جليل اختر', iso:'2025-09-02T08:30:00+03:00', city:'الرياض', branch:'السويدي' },
@@ -128,88 +147,225 @@ const BASE_APPTS=[
 ].sort((a,b)=> new Date(a.iso)-new Date(b.iso));
 
 function loadExtra(){try{return JSON.parse(localStorage.getItem(LS_APPTS))||[];}catch{return [];}}
-function saveExtra(list){localStorage.setItem(LS_APPTS,JSON.stringify(list)); fetch(API_SAVE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_appts',appts:list})}).catch(()=>{});}
-function defaultDxCfg(){return {days:[1,3,6], hour:17, minute:30, city:'الرياض', branch:'السويدي'};}
-function getDxCfg(){try{return JSON.parse(localStorage.getItem(LS_DXCFG)) || defaultDxCfg();}catch{return defaultDxCfg();}}
-function setDxCfg(cfg){localStorage.setItem(LS_DXCFG, JSON.stringify(cfg)); fetch(API_SAVE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_dx_config',cfg})}).catch(()=>{});}
+function saveExtra(list){
+  localStorage.setItem(LS_APPTS,JSON.stringify(list));
+  fetch(API_SAVE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_appts',appts:list})}).catch(()=>{});
+}
+function allAppts(){return [...BASE_APPTS,...loadExtra()].sort((a,b)=> new Date(a.iso)-new Date(b.iso));}
 
-function nextDialysisList(n=6){const cfg=getDxCfg(); const DOWS=cfg.days; const result=[]; let cursor=new Date(); for(let i=0;i<n;i++){const candidates=DOWS.map(d=>{const base=new Date(cursor); const cur=base.getDay(); let add=(d-cur+7)%7; const t=new Date(base); t.setHours(cfg.hour,cfg.minute,0,0); if(add===0 && t<=base) add=7; t.setDate(t.getDate()+add); return t;}); const soon=candidates.sort((a,b)=>a-b)[0]; result.push({ clinic:'غسيل الكلى', doctor:'—', iso:soon.toISOString(), city:cfg.city, branch:cfg.branch, isDialysis:true }); cursor=new Date(soon.getTime()+1000);} return result;}
-function allUpcoming(){const clinics=[...BASE_APPTS, ...loadExtra()].filter(a=> new Date(a.iso).getTime()>Date.now()); const dx=nextDialysisList(6); return [...clinics, ...dx].sort((a,b)=> new Date(a.iso)-new Date(b.iso));}
+const DOWS=[1,3,6]; // الاثنين، الأربعاء، السبت
+function nextDialysisList(n=3){
+  const result=[];let cursor=new Date();
+  for(let i=0;i<n;i++){
+    const candidates=DOWS.map(d=>{
+      const base=new Date(cursor);
+      const cur=base.getDay();
+      let add=(d-cur+7)%7;
+      const t=new Date(base);
+      t.setHours(17,30,0,0); // 5:30PM
+      if(add===0 && t<=base) add=7;
+      t.setDate(t.getDate()+add);
+      return t;
+    });
+    const soon=candidates.sort((a,b)=>a-b)[0];
+    result.push({date:soon, city:'الرياض', branch:'السويدي'});
+    cursor=new Date(soon.getTime()+1000);
+  }
+  return result;
+}
 
 function assignKey(type,id){return `assign_${type}_${id}`;}
-function getAssignment(type,id){return localStorage.getItem(assignKey(type,id))||'';}
-function setAssignment(type,id,name){localStorage.setItem(assignKey(type,id),name||''); fetch(API_SAVE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'assign',type,id,assignee:name})}).catch(()=>{});}
-function getUserByName(n){return USERS.find(u=>u.name===n);}
-function sms(text,toIntl){fetch(API_SMS,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to:toIntl,text})}).catch(()=>{});}
-
-function inGeoFence(appt, mylat, mylon){const key=`${appt.city}|${appt.branch}`; const ref=GEO_BRANCHES[key]; if(!ref || !mylat || !mylon) return true; const R=6371; const dLat=(mylat-ref.lat)*Math.PI/180; const dLon=(mylon-ref.lon)*Math.PI/180; const a=Math.sin(dLat/2)**2 + Math.cos(mylat*Math.PI/180)*Math.cos(ref.lat*Math.PI/180)*Math.sin(dLon/2)**2; const c=2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); const dist=R*c; return dist<=ALLOWED_RADIUS_KM;}
-
-async function claimFlow(appt){const u=getUser(); if(!u){ showLogin(true); return; }
-  try{const geoKey=LS_GEO_PREFIX+u.phone; let last=null; try{ last=JSON.parse(localStorage.getItem(geoKey)||"null"); }catch{} if(!last){ await new Promise((resolve)=>{navigator.geolocation.getCurrentPosition(pos=>{last={lat:pos.coords.latitude,lon:pos.coords.longitude,ts:Date.now()}; localStorage.setItem(geoKey, JSON.stringify(last)); resolve();}, ()=>resolve(), {enableHighAccuracy:true,timeout:6000});}); } if(last && !inGeoFence(appt,last.lat,last.lon)){ alert('عذراً، لا يمكن تأكيد المرافقة لأن موقعك الحالي خارج نطاق المدينة/الفرع المحدد للموعد.'); return; } }catch(e){}
-  const id=appt.iso; const prev=getAssignment('apt',id); const msg=prev?`سيتم استبدال المرافق (${prev})، هل ترغب بالمتابعة؟`:`سيتم تعيينك كمرافق لهذا الموعد، هل ترغب بالمتابعة؟`; if(!confirm(msg)) return;
-  setAssignment('apt',id,u.name);
-  const when=new Date(appt.iso); const apptInfo=`${appt.clinic} • ${fmtDay.format(when)} ${fmtDate.format(when)} ${fmtTime.format(when)} • ${appt.city} - ${appt.branch}`;
-  sms(`تنبيه: تم تعيين ${u.name} مرافقاً للموعد: ${apptInfo}`, FATHER_INTL);
-  sms(`تأكيد: تم تسجيلك مرافقاً للموعد: ${apptInfo}`, toIntl(u.phone));
-  if(prev){const pu=getUserByName(prev); if(pu && pu.phone){ sms(`إشعار: تم استبدالك بهذا الموعد بواسطة ${u.name} — ${apptInfo}`, toIntl(pu.phone)); }}
+function setAssignment(type,id,name){
+  localStorage.setItem(assignKey(type,id),name||'');
+  fetch(API_SAVE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'assign',type,id,assignee:name})}).catch(()=>{});
   renderAll();
+}
+function getAssignment(type,id){return localStorage.getItem(assignKey(type,id))||'';}
+function getUserByName(n){return USERS.find(u=>u.name===n);}
+function intl(p){return '+966'+p.slice(1);}
+function sms(text,to){fetch(API_SMS,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,text})}).catch(()=>{});}
+
+function claim(type,id){
+  const u=getUser(); if(!u){ showLogin(true); return; }
+  const prev=getAssignment(type,id);
+  if(prev===u.name){ setAssignment(type,id,''); toast('تم إلغاء تعيينك.'); return; }
+  setAssignment(type,id,u.name);
+  if(prev){
+    const pu=getUserByName(prev);
+    if(pu && pu.phone){ sms(`تم استبدالك من مرافقة الموعد (${id}) بواسطة ${u.name}.`, intl(pu.phone)); }
+    toast(`تم الاستبدال. المرافق السابق: ${prev}`);
+  } else {
+    toast('تم تعيينك كمرافق ✅');
+  }
+  fetch(API_SAVE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notify_patient_on_claim', type, id, assignee:u.name })}).catch(()=>{});
+  renderAssignments();
+}
+
+function renderAssignments(){
+  document.querySelectorAll('.assignee-apt').forEach(el=>{ const id=el.getAttribute('data-iso'); el.textContent=getAssignment('apt',id)||'لا يوجد'; });
+  document.querySelectorAll('.assignee-dx').forEach(el=>{ const id=el.getAttribute('data-dx'); el.textContent=getAssignment('dx',id)||'لا يوجد'; });
+  const u=getUser();
+  document.querySelectorAll('.attend-apt').forEach(cb=>{ const id=cb.getAttribute('data-iso'); cb.checked=(u && getAssignment('apt',id)===u.name); cb.onchange=()=> claim('apt', id); });
+  document.querySelectorAll('.attend-dx').forEach(cb=>{ const id=cb.getAttribute('data-dx'); cb.checked=(u && getAssignment('dx',id)===u.name); cb.onchange=()=> claim('dx', id); });
+}
+
+function clinicCard(a, index){
+  const d=new Date(a.iso); const id=a.iso;
+  const card=document.createElement('section'); card.className='card';
+  card.innerHTML=`
+    <div class="card-head"><span class="clinic-chip">${a.clinic}</span><h3 class="doctor">${a.doctor}</h3></div>
+    <div class="small">${fmtDay.format(d)} • <span class="mono">${fmtDate.format(d)}</span> — <span class="mono">${fmtTime.format(d)}</span></div>
+    <div class="small">المدينة/الفرع: <b>${a.city} — ${a.branch}</b></div>
+    <div class="countdown" id="cd-${index}">
+      <span class="label">المتبقي للموعد</span>
+      <div class="segments">
+        <div class="seg"><span class="num" id="d-${index}">0</span><span class="unit">يوم</span></div>
+        <div class="seg"><span class="num" id="h-${index}">00</span><span class="unit">ساعة</span></div>
+        <div class="seg"><span class="num" id="m-${index}">00</span><span class="unit">دقيقة</span></div>
+        <div class="seg"><span class="num" id="s-${index}">00</span><span class="unit">ثانية</span></div>
+      </div>
+    </div>
+    <div class="small">المرافق الحالي: <strong class="assignee-apt" data-iso="${id}">لا يوجد</strong></div>
+    <div class="small"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="attend-apt" data-iso="${id}"> أرغب في المرافقة / الاستبدال</label></div>
+  `;
+  return {card, target:d, id};
 }
 
 let timers=[];
 function pad2(n){return String(n).padStart(2,'0');}
-function tick(){const now=Date.now(); timers.forEach((t)=>{const total=t.target.getTime()-now; const el=document.getElementById(`cd-${t.key}`); if(!el) return; if(total<=0){el.querySelector('.label').textContent="حان وقت الموعد"; ["d","h","m","s"].forEach(k=>{const n=document.getElementById(`${k}-${t.key}`); if(n) n.textContent="00";}); return;} const s=Math.floor(total/1000); const d=Math.floor(s/86400); const h=Math.floor((s%86400)/3600); const m=Math.floor((s%3600)/60); const ss=s%60; [['d',d],['h',pad2(h)],['m',pad2(m)],['s',pad2(ss)]].forEach(([k,v])=>{const n=document.getElementById(`${k}-${t.key}`); if(n) n.textContent=v;});});}
-
-function clinicCard(appt,key){const d=new Date(appt.iso); const id=appt.iso; const card=document.createElement('section'); card.className='card'; const clinic=appt.isDialysis?'غسيل الكلى':appt.clinic; const doc=appt.isDialysis?'—':appt.doctor; const current=getUser(); const currentIsAssignee=current && (getAssignment('apt',id)===current.name); const checkRow=currentIsAssignee?'':`<div class="small"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="attend-apt" data-iso="${id}"> أرغب في المرافقة / الاستبدال</label></div>`;
-  card.innerHTML=`<div class="card-head"><span class="clinic-chip">${clinic}</span><h3 class="doctor">${doc}</h3></div>
-  <div class="small">${fmtDay.format(d)} • <span class="mono">${fmtDate.format(d)}</span> — <span class="mono">${fmtTime.format(d)}</span></div>
-  <div class="small">المدينة/الفرع: <b>${appt.city} — ${appt.branch}</b></div>
-  <div class="countdown" id="cd-${key}"><span class="label">المتبقي للموعد</span><div class="segments">
-  <div class="seg"><span class="num" id="d-${key}">0</span><span class="unit">يوم</span></div>
-  <div class="seg"><span class="num" id="h-${key}">00</span><span class="unit">ساعة</span></div>
-  <div class="seg"><span class="num" id="m-${key}">00</span><span class="unit">دقيقة</span></div>
-  <div class="seg"><span class="num" id="s-${key}">00</span><span class="unit">ثانية</span></div>
-  </div></div>
-  <div class="small">المرافق الحالي: <strong class="assignee-apt" data-iso="${id}">${getAssignment('apt',id)||'لا يوجد'}</strong></div>${checkRow}`;
-  return {card,target:d,id};
+function tick(){
+  const now=Date.now();
+  timers.forEach((t,i)=>{
+    const total=t.target.getTime()-now;
+    const el=document.getElementById(`cd-${i}`);
+    if(!el) return;
+    if(total<=0){
+      el.querySelector('.label').textContent="حان وقت الموعد";
+      ["d","h","m","s"].forEach(k=>{const n=document.getElementById(`${k}-${i}`);if(n) n.textContent="00";});
+      return;
+    }
+    const s=Math.floor(total/1000);
+    const d=Math.floor(s/86400);
+    const h=Math.floor((s%86400)/3600);
+    const m=Math.floor((s%3600)/60);
+    const ss=s%60;
+    [['d',d],['h',pad2(h)],['m',pad2(m)],['s',pad2(ss)]].forEach(([k,v])=>{
+      const n=document.getElementById(`${k}-${i}`);
+      if(n) n.textContent=v;
+    });
+  });
 }
 
-function renderMain(){const box=document.getElementById('view-main'); box.innerHTML=''; const appts=allUpcoming(); timers=[]; appts.forEach((a,i)=>{const key=i+'_'+(a.isDialysis?'dx':'cl'); const {card,target}=clinicCard(a,key); box.appendChild(card); timers.push({target,key});}); document.querySelectorAll('.attend-apt').forEach(cb=>{cb.onchange=()=>{const iso=cb.getAttribute('data-iso'); const appt=appts.find(x=>x.iso===iso); if(appt){claimFlow(appt);} cb.checked=false;};});}
-function renderArchive(){const box=document.getElementById('view-archive'); box.innerHTML=''; const wrap=document.createElement('div'); wrap.className='card'; wrap.innerHTML='<div class="section-title" style="font-weight:700;font-size:16px;margin:0 0 8px">سجل المواعيد (قيد التفعيل لاحقًا)</div>'; box.appendChild(wrap);}
-function renderAdmin(){const u=getUser(); const box=document.getElementById('view-admin'); box.innerHTML=''; if(!(u&&u.isAdmin)){box.innerHTML='<div class="card">هذه الصفحة خاصة بصاحب الحساب.</div>';return;} const cfg=getDxCfg(); const card=document.createElement('div'); card.className='card'; card.innerHTML=`
-  <div class="section-title" style="font-weight:700;font-size:16px;margin:0 0 8px">إضافة موعد عيادة جديد</div>
-  <div class="row" style="display:flex;gap:8px;margin-bottom:10px">
-    <input id="ad-clinic" type="text" placeholder="العيادة (مثال: القلب)" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
-    <input id="ad-doctor" type="text" placeholder="اسم الطبيب" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
-  </div>
-  <div class="row" style="display:flex;gap:8px;margin-bottom:10px">
-    <input id="ad-iso" type="datetime-local" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
-  </div>
-  <div class="row" style="display:flex;gap:8px;margin-bottom:10px">
-    <input id="ad-city" type="text" placeholder="المدينة (مثال: الرياض)" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
-    <input id="ad-branch" type="text" placeholder="الفرع (مثال: السويدي)" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
-  </div>
-  <button class="add" id="ad-add" style="background:#10b981;color:#fff;border:0;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer">إضافة الموعد</button>
-  <div id="ad-msg" style="margin-top:8px;color:#10b981;font-size:12px;display:none">تمت الإضافة وتم إشعار المرافقين القريبين.</div>
-  <hr style="margin:16px 0;opacity:.3">
-  <div class="section-title" style="font-weight:700;font-size:16px;margin:0 0 8px">إعدادات غسيل الكلى</div>
-  <div class="row" style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-    <label>الأيام (أرقام): <input id="dx-days" type="text" value="${cfg.days.join(',')}" style="width:140px;padding:8px;border-radius:10px;border:1px solid #e5e7eb"></label>
-    <label>الساعة: <input id="dx-hour" type="number" min="0" max="23" value="${cfg.hour}" style="width:80px;padding:8px;border-radius:10px;border:1px solid #e5e7eb"></label>
-    <label>الدقائق: <input id="dx-minute" type="number" min="0" max="59" value="${cfg.minute}" style="width:80px;padding:8px;border-radius:10px;border:1px solid #e5e7eb"></label>
-    <label>المدينة: <input id="dx-city" type="text" value="${cfg.city}" style="width:140px;padding:8px;border-radius:10px;border:1px solid #e5e7eb"></label>
-    <label>الفرع: <input id="dx-branch" type="text" value="${cfg.branch}" style="width:140px;padding:8px;border-radius:10px;border:1px solid #e5e7eb"></label>
-  </div>
-  <button id="dx-save" style="background:#2563eb;color:#fff;border:0;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer">حفظ إعدادات الغسيل</button>
-  <div id="dx-msg" style="margin-top:8px;color:#2563eb;font-size:12px;display:none">تم حفظ الإعدادات.</div>`;
+function renderMain(){
+  const box=document.getElementById('view-main');
+  box.innerHTML='';
+  const appts=allAppts().filter(a=> new Date(a.iso).getTime()>Date.now());
+  timers=[];
+  appts.forEach((a,i)=>{
+    const {card,target,id}=clinicCard(a,i);
+    box.appendChild(card);
+    timers.push({target, idx:i});
+  });
+  renderAssignments();
+}
+function renderDialysis(){
+  const box=document.getElementById('view-dialysis');
+  box.innerHTML='';
+  const title=document.createElement('div');
+  title.className='card';
+  title.innerHTML='<div class="section-title" style="font-weight:700;font-size:16px;margin:0 0 8px">المواعيد القادمة لغسيل الكلى</div><div id="dialysis-cards"></div>';
+  box.appendChild(title);
+  const inner=title.querySelector('#dialysis-cards');
+  const list=nextDialysisList(3);
+  list.forEach((o,idx)=>{
+    const d=o.date; const id=d.toISOString();
+    const card=document.createElement('div'); card.className='card';
+    card.innerHTML=`
+      <div class="card-head"><span class="clinic-chip">غسيل الكلى</span><h3 class="doctor">${fmtDay.format(d)} • <span class="mono">${fmtDate.format(d)}</span> — <span class="mono">${fmtTime.format(d)}</span></h3></div>
+      <div class="small">المدينة/الفرع: <b>${o.city} — ${o.branch}</b></div>
+      <div class="small">المرافق الحالي: <strong class="assignee-dx" data-dx="${id}">لا يوجد</strong></div>
+      <div class="small"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="attend-dx" data-dx="${id}"> أرغب في المرافقة / الاستبدال</label></div>`;
+    inner.appendChild(card);
+  });
+  renderAssignments();
+  document.querySelectorAll('.attend-dx').forEach(cb=>{
+    const id=cb.getAttribute('data-dx'); cb.onchange=()=> claim('dx', id);
+  });
+}
+function renderArchive(){
+  const box=document.getElementById('view-archive');
+  box.innerHTML='';
+  const wrap=document.createElement('div');
+  wrap.className='card';
+  wrap.innerHTML='<div class="section-title" style="font-weight:700;font-size:16px;margin:0 0 8px">سجل المواعيد (يُفعّل لاحقًا عند الأرشفة)</div>';
+  box.appendChild(wrap);
+}
+function renderAdmin(){
+  const u=getUser();
+  const box=document.getElementById('view-admin');
+  box.innerHTML='';
+  if(!(u&&u.isAdmin)){
+    box.innerHTML='<div class="card">هذه الصفحة خاصة بصاحب الحساب.</div>';return;
+  }
+  const card=document.createElement('div'); card.className='card';
+  card.innerHTML=`
+    <div class="section-title" style="font-weight:700;font-size:16px;margin:0 0 8px">إضافة موعد عيادة جديد</div>
+    <div class="row" style="display:flex;gap:8px;margin-bottom:10px">
+      <input id="ad-clinic" type="text" placeholder="العيادة (مثال: القلب)" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
+      <input id="ad-doctor" type="text" placeholder="اسم الطبيب" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
+    </div>
+    <div class="row" style="display:flex;gap:8px;margin-bottom:10px">
+      <input id="ad-iso" type="datetime-local" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
+    </div>
+    <div class="row" style="display:flex;gap:8px;margin-bottom:10px">
+      <input id="ad-city" type="text" placeholder="المدينة (مثال: الرياض)" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
+      <input id="ad-branch" type="text" placeholder="الفرع (مثال: السويدي)" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
+    </div>
+    <button class="add" id="ad-add" style="background:#10b981;color:#fff;border:0;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer">إضافة الموعد</button>
+    <div id="ad-msg" style="margin-top:8px;color:#10b981;font-size:12px;display:none">تمت الإضافة</div>`;
   box.appendChild(card);
-  document.getElementById('ad-add').onclick=()=>{const clinic=document.getElementById('ad-clinic').value.trim(); const doctor=document.getElementById('ad-doctor').value.trim(); const iso=document.getElementById('ad-iso').value; const city=document.getElementById('ad-city').value.trim()||'الرياض'; const branch=document.getElementById('ad-branch').value.trim()||'السويدي'; if(!clinic||!doctor||!iso){alert('رجاءً أكمل الحقول');return;} const ex=loadExtra(); ex.push({clinic,doctor,iso,city,branch}); saveExtra(ex); document.getElementById('ad-msg').style.display='block'; const when=new Date(iso); const apptInfo=`${clinic} • ${fmtDay.format(when)} ${fmtDate.format(when)} ${fmtTime.format(when)} • ${city} - ${branch}`; USERS.forEach(u=>{try{const last=JSON.parse(localStorage.getItem(LS_GEO_PREFIX+u.phone)||"null"); if(!last) return; const fakeAppt={city,branch,iso}; if(inGeoFence(fakeAppt,last.lat,last.lon)){ sms(`تنبيه: تم إضافة موعد جديد — ${apptInfo}. للدخول وتأكيد المرافقة، افتح التطبيق.`, toIntl(u.phone)); }}catch{}}); route('main'); renderAll();};
-  document.getElementById('dx-save').onclick=()=>{const daysStr=document.getElementById('dx-days').value.trim(); const hour=parseInt(document.getElementById('dx-hour').value,10); const minute=parseInt(document.getElementById('dx-minute').value,10); const city=document.getElementById('dx-city').value.trim(); const branch=document.getElementById('dx-branch').value.trim(); const days=daysStr.split(',').map(x=>parseInt(x,10)).filter(Number.isFinite); setDxCfg({days,hour,minute,city,branch}); document.getElementById('dx-msg').style.display='block';};
+  document.getElementById('ad-add').onclick=()=>{
+    const clinic=document.getElementById('ad-clinic').value.trim();
+    const doctor=document.getElementById('ad-doctor').value.trim();
+    const iso=document.getElementById('ad-iso').value;
+    const city=document.getElementById('ad-city').value.trim()||'الرياض';
+    const branch=document.getElementById('ad-branch').value.trim()||'السويدي';
+    if(!clinic||!doctor||!iso){alert('رجاءً أكمل الحقول');return;}
+    const ex=loadExtra(); ex.push({clinic,doctor,iso,city,branch}); saveExtra(ex);
+    document.getElementById('ad-msg').style.display='block';
+    route('main'); renderAll();
+  };
 }
-function route(tab){document.querySelectorAll('.hdr-btn[data-tab]').forEach(b=> b.classList.toggle('primary', b.getAttribute('data-tab')===tab)); document.getElementById('view-main').style.display=(tab==='main')?'block':'none'; document.getElementById('view-archive').style.display=(tab==='archive')?'block':'none'; document.getElementById('view-admin').style.display=(tab==='admin')?'block':'none'; if(tab==='main') renderMain(); if(tab==='archive') renderArchive(); if(tab==='admin') renderAdmin();}
-function renderAll(){ renderMain(); }
-function boot(){ todayHeader(); showLogin(true); renderGreeting(); route('main'); setInterval(tick,1000); } document.addEventListener('DOMContentLoaded', boot);
-function toast(msg){console.log(msg);}
-</script>
+function route(tab){
+  document.querySelectorAll('.hdr-btn[data-tab]').forEach(b=> b.classList.toggle('primary', b.getAttribute('data-tab')===tab));
+  document.getElementById('view-main').style.display=(tab==='main')?'block':'none';
+  document.getElementById('view-dialysis').style.display=(tab==='dialysis')?'block':'none';
+  document.getElementById('view-archive').style.display=(tab==='archive')?'block':'none';
+  document.getElementById('view-admin').style.display=(tab==='admin')?'block':'none';
+  if(tab==='main') renderMain();
+  if(tab==='dialysis') renderDialysis();
+  if(tab==='archive') renderArchive();
+  if(tab==='admin') renderAdmin();
+}
+function boot(){
+  todayHeader();
+  showLogin(false);
+  renderGreeting();
+  route('main');
+  renderMain();
+  setInterval(tick,1000);
+}
+document.addEventListener('DOMContentLoaded', boot);
 
+// Toast (بسيطة)
+function toast(msg){
+  const t=document.createElement('div');
+  t.textContent=msg;
+  t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 14px;border-radius:12px;z-index:3000;opacity:.95';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2200);
+}
+</script>
+<script src="sw.js"></script>
 </body>
 </html>
