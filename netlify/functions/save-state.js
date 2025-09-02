@@ -4,7 +4,7 @@ export const config = { path: "/.netlify/functions/save-state" };
 
 const APPTS_KEY = "extra_appts_v1";
 
-export default async (req, context) => {
+export default async (req) => {
   try {
     const payload = await req.json();
     const { action } = payload || {};

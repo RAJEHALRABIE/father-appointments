@@ -2,16 +2,14 @@ import twilio from "twilio";
 
 export const config = { path: "/.netlify/functions/send-sms" };
 
-export default async (req, context) => {
+export default async (req) => {
   try {
     const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM } = process.env;
     if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_FROM) {
       return new Response(JSON.stringify({ ok:false, error: "Missing Twilio env vars" }), { status: 500 });
     }
     const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-    const body = await req.json();
-    const to = body?.to;
-    const text = body?.text;
+    const { to, text } = await req.json();
     if (!to || !text) {
       return new Response(JSON.stringify({ ok:false, error: "Missing to/text" }), { status: 400 });
     }
