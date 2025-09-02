@@ -1,4 +1,4 @@
 [functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-  external_node_modules = ["twilio", "@netlify/blobs"]
+directory = "netlify/functions"
+node_bundler = "esbuild"
+external_node_modules = ["twilio", "@netlify/blobs"]

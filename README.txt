@@ -1,24 +1,18 @@
-# مواعيد الوالد v19.5 (OTP + SMS + Functions مفعّلة)
+# مواعيد الوالد v19.5 (أحدث نسخة مع إصلاحات كاملة)
 
-## ما الجديد في v19.5
-- نقل وظائف Netlify إلى المجلد الصحيح `netlify/functions` حتى يظهر تبويب **Functions** تلقائيًا بعد النشر.
-- إصلاحات في الواجهة: تعريف عناصر الأخطاء (ph-err/otp-err) ومعالجة معرف زر التحقق.
-- إضافة **reminders.scheduled.js** لتذكير تلقائي قبل الموعد بساعة–ساعتين (يفحص كل 15 دقيقة).
-- أيقونات PWA جاهزة (192px/512px).
+## المميزات
+- وظائف Netlify في المسار الصحيح: netlify/functions
+  - send-sms.js (Twilio)
+  - save-state.js (Netlify Blobs)
+  - reminders.scheduled.js (تذكير تلقائي قبل الموعد بساعة–ساعتين كل 15 دقيقة)
+- إصلاح تسجيل الدخول و OTP بالكامل + رسائل الأخطاء
+- PWA جاهز (manifest + icons + sw.js)
 
 ## التهيئة
-1) ارفع المجلد كاملًا إلى Netlify كموقع جديد أو كإصدار جديد.
-2) من إعدادات المشروع → **Environment variables** أضف:
-   - `TWILIO_ACCOUNT_SID`
-   - `TWILIO_AUTH_TOKEN`
-   - `TWILIO_FROM`  (رقم Twilio بصيغة دولية)
-   - `FATHER_PHONE` (مثل +966532022686)
-   - `REMIND_PATIENT` = `true`
-3) لا حاجة لضبط Cron خارجي — وظيفة `reminders.scheduled.js` تعمل بجدولة Netlify (`@every 15m`).
-
-## ملاحظات
-- وظيفة `save-state` تحفظ:
-  - لائحة المواعيد الإضافية (المدخلة من صفحة "الإدارة") في Netlify Blobs تحت المفتاح `extra_appts_v1`.
-  - تعيينات المرافقين تحت مفاتيح تبدأ بـ `assign_`.
-- التذكير المجدول يرسل SMS للمريض فقط قبل الموعد بساعة–ساعتين من **المواعيد الإضافية** المخزّنة. (التذكير لمواعيد الـ BASE يمكن إضافته لاحقًا إن رغبت).
-- الإشعار عند الاستبدال يُرسل لحظيًا من الواجهة عند حدوث الاستبدال.
+1) ارفع المجلد كامل إلى Netlify.
+2) أضف متغيرات البيئة:
+   TWILIO_ACCOUNT_SID
+   TWILIO_AUTH_TOKEN
+   TWILIO_FROM
+   FATHER_PHONE
+   REMIND_PATIENT=true
